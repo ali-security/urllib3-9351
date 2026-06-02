@@ -138,7 +138,7 @@ The best way to visualize relationships between your dependencies is using `pipd
 .. code-block:: bash
 
   # From inside your Python environment:
-  $ python -m pip install pipdeptree
+  $ python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' pipdeptree
   # We only care about packages requiring urllib3
   $ pipdeptree --reverse | grep "requires: urllib3"
   ├── botocore==1.38.36 [requires: urllib3>=1.25.4,<1.27]
@@ -182,7 +182,7 @@ Next you should try installing urllib3 v2.x locally and run your test suite.
 
 .. code-block:: bash
 
-  $ python -m pip install -U 'urllib3>=2'
+  $ python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' -U 'urllib3>=2'
 
 Because there are new ``DeprecationWarnings`` you should ensure that you're
 able to see those warnings when running your test suite. To do so you can add

@@ -80,7 +80,7 @@ urllib3 can be installed with `pip <https://pip.pypa.io>`_
 
 .. code-block:: bash
 
-  $ python -m pip install urllib3
+  $ python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' urllib3
 
 Alternatively, you can grab the latest source code from `GitHub <https://github.com/urllib3/urllib3>`_:
 
@@ -88,7 +88,7 @@ Alternatively, you can grab the latest source code from `GitHub <https://github.
 
   $ git clone https://github.com/urllib3/urllib3.git
   $ cd urllib3
-  $ pip install .
+  $ pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' .
 
 Usage
 -----

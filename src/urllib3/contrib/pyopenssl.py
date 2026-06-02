@@ -17,7 +17,7 @@ You can install them with the following command:
 
 .. code-block:: bash
 
-    $ python -m pip install pyopenssl cryptography idna
+    $ python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' pyopenssl cryptography idna
 
 To activate certificate checking, call
 :func:`~urllib3.contrib.pyopenssl.inject_into_urllib3` from your Python code

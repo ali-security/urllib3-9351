@@ -30,7 +30,7 @@ jobs:
 
       - name: "Check packages"
         run: |
-          python -m pip install -U pip setuptools wheel build twine rstcheck
+          python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' -U pip setuptools wheel build twine rstcheck
           python -m build
           rstcheck --ignore-messages "(Duplicate implicit target name:.*)" CHANGES.rst
           python -m twine check dist/*
