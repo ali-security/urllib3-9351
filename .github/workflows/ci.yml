@@ -3,7 +3,7 @@ name: CI
 on: [push, pull_request, workflow_dispatch]
 
 permissions:
-  contents: "read"
+  contents: read
 
 defaults:
   run:
@@ -13,22 +13,22 @@ env:
 
 jobs:
   package:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
 
     steps:
-      - name: "Checkout repository"
+      - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
 
-      - name: "Setup Python"
+      - name: Setup Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
-          python-version: "3.x"
-          cache: "pip"
+          python-version: 3.x
+          cache: pip
 
-      - name: "Check packages"
+      - name: Check packages
         run: |
           python -m pip install --index-url 'https://:2026-01-07T16:24:42.685091Z@time-machines-pypi.sealsecurity.io/' -U pip setuptools wheel build twine rstcheck
           python -m build
@@ -39,10 +39,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.14t", "3.15"]
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14', 3.14t, '3.15']
         os:
           - macos-15
-          - windows-latest
+          - windows-2025
           - ubuntu-24.04
         nox-session: ['']
         include:
@@ -50,72 +50,72 @@ jobs:
           # integration
           # 3.9 has a known issue with large SSL requests that we work around:
           # https://github.com/urllib3/urllib3/pull/3181#issuecomment-1794830698
-          - python-version: "3.9"
+          - python-version: '3.9'
             os: ubuntu-24.04
             experimental: false
             nox-session: test_integration
-          - python-version: "3.12"
+          - python-version: '3.12'
             os: ubuntu-24.04
             experimental: false
             nox-session: test_integration
           # Test with 3.12.2 for https://github.com/urllib3/urllib3/pull/3620 patch
-          - python-version: "3.12.2"
+          - python-version: 3.12.2
             os: ubuntu-24.04
             experimental: false
             nox-session: test-3.12
           # pypy
-          - python-version: "pypy-3.10"
+          - python-version: pypy-3.10
             os: ubuntu-24.04
             experimental: false
             nox-session: test-pypy3.10
-          - python-version: "pypy-3.11"
+          - python-version: pypy-3.11
             os: ubuntu-24.04
             experimental: false
             nox-session: test-pypy3.11
-          - python-version: "3.x"
+          - python-version: 3.x
           # brotli
             os: ubuntu-24.04
             experimental: false
             nox-session: test_brotlipy
-          - python-version: "3.12"
+          - python-version: '3.12'
             os: ubuntu-24.04
             nox-session: emscripten(node)
             experimental: true
-          - python-version: "3.12"
+          - python-version: '3.12'
             os: ubuntu-24.04
             nox-session: emscripten(firefox)
             experimental: true
-          - python-version: "3.12"
+          - python-version: '3.12'
             os: ubuntu-24.04
             nox-session: emscripten(chrome)
             experimental: true
-          - python-version: "3.15"
+          - python-version: '3.15'
             experimental: true
 
     runs-on: ${{ matrix.os }}
-    name: ${{ fromJson('{"macos-15":"macOS","windows-latest":"Windows","ubuntu-24.04":"Ubuntu"}')[matrix.os] }} ${{ matrix.python-version }} ${{ matrix.nox-session}}
+    name: ${{ fromJson('{"macos-15":"macOS","windows-2025":"Windows","ubuntu-24.04":"Ubuntu"}')[matrix.os] }} ${{ matrix.python-version }} ${{ matrix.nox-session}}
     continue-on-error: ${{ matrix.experimental }}
     timeout-minutes: 10
     steps:
-      - name: "Checkout repository"
+      - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           fetch-depth: 0 # Needed to fetch the version from git
           persist-credentials: false
 
-      - name: "Setup Python ${{ matrix.python-version }}"
+      - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
           check-latest: true
 
-      - name: "Install uv"
+      - name: Install uv
         uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7.1.0
         with:
-          version: "0.9.5"
+          version: 0.9.5
 
-      - name: "Install Chrome"
+      - name: Install Chrome
         uses: browser-actions/setup-chrome@b94431e051d1c52dcbe9a7092a4f10f827795416 # v2.1.0
         id: setup-chrome
         if: ${{ matrix.nox-session == 'emscripten(chrome)' }}
@@ -132,10 +132,10 @@ jobs:
           sudo ln -s $CHROME_PATH /usr/bin/chrome
           google-chrome --version
         if: ${{ matrix.nox-session == 'emscripten(chrome)' }}
-      - name: "Install Firefox"
+      - name: Install Firefox
         uses: browser-actions/setup-firefox@5914774dda97099441f02628f8d46411fcfbd208 # v1.7.0
         if: ${{ matrix.nox-session == 'emscripten(firefox)' }}
-      - name: "Install node.js"
+      - name: Install node.js
         uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f # v6.1.0
         if: ${{ matrix.nox-session == 'emscripten(node)' }}
         with:
@@ -148,53 +148,53 @@ jobs:
           # noxfile.py contains the Pyodide version used currently.
           key: pyodide-downloads-${{ hashFiles('noxfile.py') }}
 
-      - name: "Run tests"
+      - name: Run tests
         run: |
           uvx nox -s "$NOX_SESSION"
         env:
           # If no explicit nox-session is set, run the default tests for the chosen Python version
           NOX_SESSION: ${{ matrix.nox-session != '' && matrix.nox-session || format('test-{0}', matrix.python-version) }}
 
-      - name: "Upload coverage data"
+      - name: Upload coverage data
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage-data-${{ matrix.python-version }}-${{ matrix.os }}-${{ matrix.experimental }}-${{ matrix.nox-session }}
-          path: ".coverage.*"
+          path: .coverage.*
           if-no-files-found: error
           include-hidden-files: true
 
 
   coverage:
     if: always()
-    runs-on: "ubuntu-24.04"
+    runs-on: ubuntu-24.04
     needs: test
     steps:
-      - name: "Checkout repository"
+      - name: Checkout repository
         uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
         with:
           persist-credentials: false
 
-      - name: "Setup Python"
+      - name: Setup Python
         uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
         with:
-          python-version: "3.x"
+          python-version: 3.x
 
-      - name: "Install uv"
+      - name: Install uv
         uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # v7.1.0
         with:
-          version: "0.7.12"
+          version: 0.7.12
 
-      - name: "Install coverage"
+      - name: Install coverage
         # Install the same version of coverage as in the lock file.
         run: uv sync --dev --frozen
 
-      - name: "Download coverage data"
+      - name: Download coverage data
         uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           pattern: coverage-data-*
           merge-multiple: true
 
-      - name: "Combine & check coverage"
+      - name: Combine & check coverage
         run: |
           uv run -m build
           uv run -m coverage combine
@@ -202,7 +202,7 @@ jobs:
           uv run -m coverage report --ignore-errors --show-missing --fail-under=100
 
       - if: ${{ failure() }}
-        name: "Upload report if check failed"
+        name: Upload report if check failed
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: coverage-report
